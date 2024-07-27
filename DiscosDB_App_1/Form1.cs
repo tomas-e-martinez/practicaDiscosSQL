@@ -39,8 +39,11 @@ namespace DiscosDB_App_1
 
         private void dgvDiscos_SelectionChanged(object sender, EventArgs e)
         {
-            Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
-            cargarImagen(seleccionado.UrlImagenTapa);
+            if(dgvDiscos.CurrentRow != null)
+            {
+                Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+                cargarImagen(seleccionado.UrlImagenTapa);
+            }
         }
 
         private void cargar()
@@ -50,14 +53,19 @@ namespace DiscosDB_App_1
             {
                 listaDiscos = negocio.listar();
                 dgvDiscos.DataSource = listaDiscos;
-                dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
-                dgvDiscos.Columns["Id"].Visible = false;
+                ocultarColumnas();
                 cargarImagen(listaDiscos[0].UrlImagenTapa);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void ocultarColumnas()
+        {
+            dgvDiscos.Columns["UrlImagenTapa"].Visible = false;
+            dgvDiscos.Columns["Id"].Visible = false;
         }
 
         private void btnEstilos_Click(object sender, EventArgs e)
@@ -76,15 +84,18 @@ namespace DiscosDB_App_1
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
-            frmAltaDisco frmModificarDisco = new frmAltaDisco(seleccionado);
-
-            frmModificarDisco.Text = "Modificar disco";
-
-            
-            
-            frmModificarDisco.ShowDialog();
-            cargar();
+            try
+            {
+                Disco seleccionado = (Disco)dgvDiscos.CurrentRow.DataBoundItem;
+                frmAltaDisco frmModificarDisco = new frmAltaDisco(seleccionado);
+                frmModificarDisco.Text = "Modificar disco";
+                frmModificarDisco.ShowDialog();
+                cargar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -108,6 +119,22 @@ namespace DiscosDB_App_1
             }
 
 
+        }
+
+        private void btnFiltro_Click(object sender, EventArgs e)
+        {
+            List<Disco> listaFiltrada;
+            string filtro = txtFiltro.Text;
+
+            if (filtro != "")
+                listaFiltrada = listaDiscos.FindAll(x => x.Titulo.ToLower().Contains(filtro.ToLower()));
+            else
+                listaFiltrada = listaDiscos;
+
+
+            dgvDiscos.DataSource = null;
+            dgvDiscos.DataSource = listaFiltrada;
+            ocultarColumnas();
         }
     }
 }
