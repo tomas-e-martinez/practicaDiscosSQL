@@ -123,6 +123,11 @@ namespace DiscosDB_App_1
 
         private void btnFiltro_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
             List<Disco> listaFiltrada;
             string filtro = txtFiltro.Text;
 
