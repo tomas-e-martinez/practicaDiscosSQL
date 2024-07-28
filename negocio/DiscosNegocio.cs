@@ -132,5 +132,97 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<Disco> filtrar(string campo, string criterio, string filtro)
+        {
+            List<Disco> lista = new List<Disco>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                string consulta = "Select d.Id, Titulo, FechaLanzamiento, CantidadCanciones, UrlImagenTapa, t.Descripcion as Formato, e.Descripcion as Genero, d.IdEstilo, d.IdTipoEdicion  From DISCOS D, TIPOSEDICION T, ESTILOS E where d.IdEstilo = e.Id and d.IdTipoEdicion = t.Id And ";
+                if(campo == "Cant. Canciones")
+                {
+                    switch(criterio)
+                    {
+                        case "Mayor a":
+                            consulta += "CantidadCanciones > " + filtro;
+                            break;
+                        case "Menor a":
+                            consulta += "CantidadCanciones < " + filtro;
+                            break;
+                        default:
+                            consulta += "CantidadCanciones = " + filtro;
+                            break;
+                    }
+                }
+                else if(campo == "Título")
+                {
+                    switch (criterio)
+                    {
+                        case "Comienza con":
+                            consulta += "Titulo like '" + filtro + "%'";
+                            break;
+                        case "Termina con":
+                            consulta += "Titulo like '%" + filtro + "'";
+                            break;
+                        default:
+                            consulta += "Titulo like '%" + filtro + "%'";
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (criterio)
+                    {
+                        case "Comienza con":
+                            consulta += "e.Descripcion like '" + filtro + "%'";
+                            break;
+                        case "Termina con":
+                            consulta += "e.Descripcion like '%" + filtro + "'";
+                            break;
+                        default:
+                            consulta += "e.Descripcion like '%" + filtro + "%'";
+                            break;
+                    }
+                }
+
+                datos.setearConsulta(consulta);
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Disco aux = new Disco();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Titulo = (string)datos.Lector["Titulo"];
+                    aux.FechaLanzamiento = (DateTime)datos.Lector["FechaLanzamiento"];
+                    aux.CantidadCanciones = (int)datos.Lector["CantidadCanciones"];
+
+                    if (!(datos.Lector["UrlImagenTapa"] is DBNull))
+                        aux.UrlImagenTapa = (string)datos.Lector["UrlImagenTapa"];
+
+                    aux.TipoEdicion = new TipoEdicion();
+                    aux.TipoEdicion.Id = (int)datos.Lector["IdTipoEdicion"];
+                    aux.TipoEdicion.Descripcion = (string)datos.Lector["Formato"];
+                    aux.Estilo = new Estilo();
+                    aux.Estilo.Id = (int)datos.Lector["IdEstilo"];
+                    aux.Estilo.Descripcion = (string)datos.Lector["Genero"];
+
+                    lista.Add(aux);
+                }
+
+
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }
