@@ -95,9 +95,9 @@ namespace DiscosDB_App_1
                 frmModificarDisco.ShowDialog();
                 cargar();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("No hay ningún disco seleccionado.");
             }
         }
 
@@ -164,12 +164,55 @@ namespace DiscosDB_App_1
             }
         }
 
+        private bool validarFiltro()
+        {
+            if(cboCampo.SelectedIndex == -1)
+            {
+                MessageBox.Show("Por favor seleccione el campo a filtrar.");
+                return true;
+            }
+            else if (cboCriterio.SelectedIndex == -1)
+            {
+                MessageBox.Show("Por favor seleccione el criterio a filtrar.");
+                return true;
+            }
+            if(cboCampo.SelectedItem.ToString() == "Cant. Canciones")
+            {
+                if (string.IsNullOrEmpty(txtFiltroAvanzado.Text))
+                {
+                    MessageBox.Show("El filtro de búsqueda no debe estar vacío.");
+                    return true;
+                }
+                if (!(soloNumeros(txtFiltroAvanzado.Text)))
+                {
+                    MessageBox.Show("Solo puede usar números para filtrar por cantidad de canciones.");
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
+
+        private bool soloNumeros(string cadena)
+        {
+            foreach (char caracter in cadena)
+            {
+                if (!(char.IsNumber(caracter)))
+                    return false;
+            }
+            return true;
+        }
+
         private void btnFiltro_Click_1(object sender, EventArgs e)
         {
             DiscosNegocio negocio = new DiscosNegocio();
 
             try
             {
+                if (validarFiltro())
+                    return;
+
                 string campo = cboCampo.SelectedItem.ToString();
                 string criterio = cboCriterio.SelectedItem.ToString();
                 string filtro = txtFiltroAvanzado.Text;
