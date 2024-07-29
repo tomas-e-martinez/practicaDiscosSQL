@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using dominio;
 using negocio;
+using System.Configuration;
 
 namespace DiscosDB_App_1
 {
     public partial class frmAltaDisco : Form
     {
         private Disco disco = null;
+        private OpenFileDialog archivo = null;
 
         public frmAltaDisco()
         {
@@ -58,6 +61,9 @@ namespace DiscosDB_App_1
                     MessageBox.Show("Disco agregado exitosamente.");
                 }
 
+                //Guardo imagen si la levantó localmente
+                if (archivo != null && !(txtUrlImagen.Text.ToUpper().Contains("HTTP")));
+                    File.Copy(archivo.FileName, ConfigurationManager.AppSettings["images-folder"] + archivo.SafeFileName);
 
                 Close();
 
@@ -114,6 +120,21 @@ namespace DiscosDB_App_1
             catch (Exception)
             {
                 pbxDisco.Load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1BhBgvAdx2cQwiyvb-89VbGVzgQbB983tfw&s");
+            }
+        }
+
+        private void btnAgregarImagen_Click(object sender, EventArgs e)
+        {
+            archivo = new OpenFileDialog();
+            archivo.Filter = ".jpg|*.jpg |.png|*.png";
+
+            if(archivo.ShowDialog() == DialogResult.OK)
+            {
+                txtUrlImagen.Text = archivo.FileName;
+                cargarImagen(archivo.FileName);
+
+                //Guardar imagen
+                //File.Copy(archivo.FileName, ConfigurationManager.AppSettings["images-folder"] + archivo.SafeFileName);
             }
         }
     }

@@ -43,6 +43,7 @@
             this.txtUrlImagen = new System.Windows.Forms.TextBox();
             this.pbxDisco = new System.Windows.Forms.PictureBox();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
+            this.btnAgregarImagen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbxDisco)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,7 +91,7 @@
             // btnAceptar
             // 
             this.btnAceptar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnAceptar.Location = new System.Drawing.Point(192, 301);
+            this.btnAceptar.Location = new System.Drawing.Point(190, 301);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(85, 23);
             this.btnAceptar.TabIndex = 6;
@@ -101,7 +102,7 @@
             // btnCancelar
             // 
             this.btnCancelar.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnCancelar.Location = new System.Drawing.Point(366, 301);
+            this.btnCancelar.Location = new System.Drawing.Point(364, 301);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(90, 23);
             this.btnCancelar.TabIndex = 7;
@@ -164,7 +165,8 @@
             // 
             // pbxDisco
             // 
-            this.pbxDisco.Location = new System.Drawing.Point(482, 43);
+            this.pbxDisco.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pbxDisco.Location = new System.Drawing.Point(535, 43);
             this.pbxDisco.Name = "pbxDisco";
             this.pbxDisco.Size = new System.Drawing.Size(305, 281);
             this.pbxDisco.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -179,11 +181,22 @@
             this.dtpFecha.Size = new System.Drawing.Size(264, 22);
             this.dtpFecha.TabIndex = 15;
             // 
+            // btnAgregarImagen
+            // 
+            this.btnAgregarImagen.Location = new System.Drawing.Point(458, 249);
+            this.btnAgregarImagen.Name = "btnAgregarImagen";
+            this.btnAgregarImagen.Size = new System.Drawing.Size(34, 27);
+            this.btnAgregarImagen.TabIndex = 16;
+            this.btnAgregarImagen.Text = "<";
+            this.btnAgregarImagen.UseVisualStyleBackColor = true;
+            this.btnAgregarImagen.Click += new System.EventHandler(this.btnAgregarImagen_Click);
+            // 
             // frmAltaDisco
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(831, 387);
+            this.ClientSize = new System.Drawing.Size(884, 387);
+            this.Controls.Add(this.btnAgregarImagen);
             this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.pbxDisco);
             this.Controls.Add(this.txtUrlImagen);
@@ -226,5 +239,6 @@
         private System.Windows.Forms.TextBox txtUrlImagen;
         private System.Windows.Forms.PictureBox pbxDisco;
         private System.Windows.Forms.DateTimePicker dtpFecha;
+        private System.Windows.Forms.Button btnAgregarImagen;
     }
 }
